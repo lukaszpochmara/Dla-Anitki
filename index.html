@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Walking Cat Animation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('assets/background.webp') no-repeat center center fixed;
+      background-size: 100%;
+      overflow: hidden;
+    }
+
+    #loading-bar {
+      position: absolute;
+      bottom: 20px;
+      left: 10%;
+      width: 80%;
+      height: 10px;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    #loading-progress {
+      height: 100%;
+      background: #f3091c;
+      width: 0;
+      transition: width 5s linear;
+    }
+
+    #cat {
+      position: absolute;
+      bottom: 50px;
+      left: -300px; /* Starts off-screen */
+      width: 300px;
+      animation: walk 5s linear infinite;
+    }
+
+    #main-content {
+      display: none; /* Hidden by default */
+      opacity: 0;
+      transition: opacity 1s ease-in;
+    }
+
+    @keyframes walk {
+      from {
+        left: -150px;
+      }
+      to {
+        left: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading-bar">
+    <div id="loading-progress"></div>
+  </div>
+  <img id="cat" src="assets/lion.gif" alt="Walking Cat">
+  
+  <div id="main-content">
+    <!-- Your main content goes here -->
+    <h1></h1>
+    <p></p>
+  </div>
+
+  <script>
+    // Start the loading animation
+    document.addEventListener("DOMContentLoaded", function () {
+      const progressBar = document.getElementById("loading-progress");
+      const mainContent = document.getElementById("main-content");
+
+      progressBar.style.width = "100%"; // Animate the bar to full width
+
+      // When loading animation ends (after 5 seconds)
+      setTimeout(function() {
+        document.getElementById("loading-bar").style.display = "none"; // Hide loading bar
+        mainContent.style.display = "block"; // Show main content
+        mainContent.style.opacity = 1; // Fade in the content
+        
+        // Redirect to Anitka.html after 5 seconds
+        setTimeout(function() {
+          window.location.href = "Anitka.html"; // Redirect to Anitka.html
+        }, 1000); // Wait 1 second after fading in before redirect
+      }, 5000); // Matches the duration of the loading animation (5 seconds)
+    });
+  </script>
+</body>
+</html>
