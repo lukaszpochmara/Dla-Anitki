@@ -9,16 +9,16 @@
       margin: 0;
       padding: 0;
       background: url('assets/background.webp') no-repeat center center fixed;
-      background-size: 100%;
+      background-size: cover;
       overflow: hidden;
     }
 
     #loading-bar {
       position: absolute;
-      bottom: 20px;
-      left: 10%;
-      width: 80%;
-      height: 10px;
+      bottom: 10%;
+      left: 5%;
+      width: 90%;
+      height: 8px;
       background: #ddd;
       border-radius: 10px;
       overflow: hidden;
@@ -33,16 +33,47 @@
 
     #cat {
       position: absolute;
-      bottom: 50px;
-      left: -300px; /* Starts off-screen */
-      width: 300px;
-      animation: walk 5s linear infinite;
+      bottom: 60px;
+      left: -300px;
+      width: 20%;
+      max-width: 150px;
+      animation: walk 5s linear forwards;
+    }
+
+    #message {
+      position: absolute;
+      bottom: 150px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 16px;
+      color: #f3091c;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      background-color: white;
+      border-radius: 10px;
+      padding: 10px 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      visibility: hidden;
+    }
+
+    #message::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent transparent white transparent;
     }
 
     #main-content {
-      display: none; /* Hidden by default */
+      display: none;
       opacity: 0;
       transition: opacity 1s ease-in;
+      text-align: center;
+      margin-top: 20%;
+      padding: 0 10px;
     }
 
     @keyframes walk {
@@ -53,6 +84,24 @@
         left: 100%;
       }
     }
+
+    @media (max-width: 768px) {
+      #cat {
+        bottom: 40px;
+        width: 30%;
+      }
+
+      #message {
+        font-size: 14px;
+        bottom: 120px;
+        padding: 8px 15px;
+      }
+
+      #loading-bar {
+        height: 6px;
+        bottom: 8%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -60,32 +109,59 @@
     <div id="loading-progress"></div>
   </div>
   <img id="cat" src="assets/lion.gif" alt="Walking Cat">
+  <div id="message">Cześć Anitko! Dzisiaj Twoje urodziny :)</div>
   
   <div id="main-content">
-    <!-- Your main content goes here -->
-    <h1></h1>
-    <p></p>
+    <h1>Welcome!</h1>
+    <p>This is the main content.</p>
   </div>
 
   <script>
-    // Start the loading animation
     document.addEventListener("DOMContentLoaded", function () {
       const progressBar = document.getElementById("loading-progress");
       const mainContent = document.getElementById("main-content");
+      const cat = document.getElementById("cat");
+      const message = document.getElementById("message");
 
-      progressBar.style.width = "100%"; // Animate the bar to full width
+      progressBar.style.width = "100%";
 
-      // When loading animation ends (after 5 seconds)
       setTimeout(function() {
-        document.getElementById("loading-bar").style.display = "none"; // Hide loading bar
-        mainContent.style.display = "block"; // Show main content
-        mainContent.style.opacity = 1; // Fade in the content
-        
-        // Redirect to Anitka.html after 5 seconds
+        document.getElementById("loading-bar").style.display = "none";
+        mainContent.style.display = "block";
+        mainContent.style.opacity = 1;
+
         setTimeout(function() {
-          window.location.href = "Anitka.html"; // Redirect to Anitka.html
-        }, 1000); // Wait 1 second after fading in before redirect
-      }, 5000); // Matches the duration of the loading animation (5 seconds)
+          window.location.href = "Anitka.html";
+        }, 1000);
+      }, 5000);
+
+      cat.addEventListener("click", function() {
+        // Stop the animation
+        cat.style.animationPlayState = 'paused';
+        
+        message.style.visibility = "visible";
+        message.style.opacity = 1;
+
+        // After 5 seconds, resume the cat animation
+        setTimeout(function() {
+          cat.style.animationPlayState = 'running'; // Resume animation
+          message.style.opacity = 0;
+          setTimeout(function() {
+            message.style.visibility = "hidden";
+          }, 2000);
+        }, 5000); // Wait 5 seconds before continuing the animation
+      });
+
+      // Monitor the cat position to detect when it leaves the screen
+      function checkCatPosition() {
+        if (cat.getBoundingClientRect().right > window.innerWidth) {
+          mainContent.style.display = "block"; // Show main content
+          mainContent.style.opacity = 1; // Fade in
+        }
+      }
+
+      // Run the check every 100ms
+      setInterval(checkCatPosition, 100);
     });
   </script>
 </body>
