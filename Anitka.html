@@ -29,6 +29,7 @@
             font-family: Arial, sans-serif;
             padding-top: 20%;
         }
+
         /* Styl przycisku */
         .audio-button {
             position: fixed;
@@ -47,6 +48,7 @@
             background-color: rgba(255, 255, 255, 0.8);
             color: black;
         }
+
         /* Styl formularza hasła */
         .password-form {
             display: flex;
@@ -63,7 +65,8 @@
             margin-bottom: 10px;
             border: none;
             border-radius: 5px;
-            width: 250px;
+            width: 80%; /* Szerokość w procentach dla responsywności */
+            max-width: 300px; /* Maksymalna szerokość */
         }
 
         .password-form button {
@@ -74,17 +77,30 @@
             color: white;
             border: none;
             border-radius: 5px;
-            width: 250px;
+            width: 80%;
+            max-width: 300px;
         }
 
         .password-form button:hover {
             background-color: #45a049;
         }
+
+        /* Dostosowanie treści do różnych ekranów */
+        @media (max-width: 600px) {
+            .content {
+                padding-top: 10%; /* Mniejsza odległość od góry na mniejszych ekranach */
+            }
+
+            .audio-button {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Wideo jako tło -->
-    <video id="backgroundVideo" autoplay loop>
+    <video id="backgroundVideo" autoplay loop muted>
         <source src="myslovitz-trzy-sny-o-tym-samym-official-video-1080-publer.io - Trim1 - Trim.mp4" type="video/mp4">
         Twoja przeglądarka nie obsługuje elementu wideo.
     </video>
@@ -125,19 +141,11 @@
                 submitButton.click(); // Symulacja kliknięcia przycisku
             }
         });
-    </script>
 
-    <script>
+        // Obsługa przycisku dźwięku
         const video = document.getElementById('backgroundVideo');
         const audioButton = document.getElementById('audioButton');
 
-        // Automatyczne odtwarzanie dźwięku, jeśli przeglądarka pozwala
-        video.muted = false;
-        video.play().catch(error => {
-            console.warn("Automatyczne odtwarzanie dźwięku zablokowane przez przeglądarkę:", error);
-        });
-
-        // Obsługa przycisku dźwięku
         audioButton.addEventListener('click', () => {
             if (video.muted) {
                 video.muted = false;
