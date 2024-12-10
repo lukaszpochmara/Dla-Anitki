@@ -33,19 +33,19 @@
 
     #cat {
       position: absolute;
-      bottom: 60px;
+      bottom: 50px;
       left: -300px;
       width: 20%;
       max-width: 150px;
-      animation: walk 5s linear forwards;
+      animation: walk 7s linear forwards;
     }
 
     #message {
       position: absolute;
-      bottom: 150px;
+      bottom: 200px;
       left: 50%;
-      transform: translateX(-50%);
-      font-size: 16px;
+      transform: translateX(-20%);
+      font-size: 60px;
       color: #f3091c;
       opacity: 0;
       transition: opacity 1s ease-in-out;
@@ -74,6 +74,37 @@
       text-align: center;
       margin-top: 20%;
       padding: 0 10px;
+    }
+
+    #next-button {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 30px;
+      font-size: 16px;
+      background-color: #f3091c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #next-button:hover {
+      background-color: #d3071a;
+    }
+
+    #catch-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 50px;
+      color: black;
+      opacity: 1;
+      transition: opacity 1s ease-in-out;
     }
 
     @keyframes walk {
@@ -109,12 +140,27 @@
     <div id="loading-progress"></div>
   </div>
   <img id="cat" src="assets/lion.gif" alt="Walking Cat">
-  <div id="message">Cześć Anitko! Dzisiaj Twoje urodziny :)</div>
+  <div id="message">Cześć Anitko! Dzisiaj Twoje urodziny :)
+    Mam dla Ciebie prośbę. Postępuj wg moich instrukcji.
+  </div>
   
+  <div id="catch-message">Złap kotka!</div> <!-- Added catch message -->
+
   <div id="main-content">
     <h1>Welcome!</h1>
     <p>This is the main content.</p>
   </div>
+
+  <button id="next-button">Go to Next Page</button>
+
+  <!-- Audio Element -->
+  <audio id="background-music" loop autoplay>
+    <source src="assets/Dla Ciebie - Myslovitz.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Button to toggle music -->
+  <button id="audio-toggle-button">Mute Music</button>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -122,18 +168,29 @@
       const mainContent = document.getElementById("main-content");
       const cat = document.getElementById("cat");
       const message = document.getElementById("message");
+      const nextButton = document.getElementById("next-button");
+      const catchMessage = document.getElementById("catch-message");
+      const audioElement = document.getElementById("background-music");
+      const audioToggleButton = document.getElementById("audio-toggle-button");
 
       progressBar.style.width = "100%";
 
       setTimeout(function() {
         document.getElementById("loading-bar").style.display = "none";
+        nextButton.style.opacity = 1; // Make the "Next" button visible
+      }, 3000); // Set a shorter delay before showing the "Next" button
+
+      nextButton.addEventListener('click', function() {
+        // Hide loading bar and show main content
+        document.getElementById("loading-bar").style.display = "none";
         mainContent.style.display = "block";
         mainContent.style.opacity = 1;
 
+        // Redirect after 1 second
         setTimeout(function() {
           window.location.href = "Anitka.html";
         }, 1000);
-      }, 5000);
+      });
 
       cat.addEventListener("click", function() {
         // Stop the animation
@@ -142,6 +199,9 @@
         message.style.visibility = "visible";
         message.style.opacity = 1;
 
+        // Hide "Złap kota!" message when the cat is clicked
+        catchMessage.style.opacity = 0;
+
         // After 5 seconds, resume the cat animation
         setTimeout(function() {
           cat.style.animationPlayState = 'running'; // Resume animation
@@ -149,19 +209,19 @@
           setTimeout(function() {
             message.style.visibility = "hidden";
           }, 2000);
-        }, 5000); // Wait 5 seconds before continuing the animation
+        }, 15000); // Wait 5 seconds before continuing the animation
       });
 
-      // Monitor the cat position to detect when it leaves the screen
-      function checkCatPosition() {
-        if (cat.getBoundingClientRect().right > window.innerWidth) {
-          mainContent.style.display = "block"; // Show main content
-          mainContent.style.opacity = 1; // Fade in
+      // Toggle Audio Playback
+      audioToggleButton.addEventListener('click', function() {
+        if (audioElement.paused) {
+          audioElement.play();
+          audioToggleButton.textContent = "Mute Music";
+        } else {
+          audioElement.pause();
+          audioToggleButton.textContent = "Unmute Music";
         }
-      }
-
-      // Run the check every 100ms
-      setInterval(checkCatPosition, 100);
+      });
     });
   </script>
 </body>
