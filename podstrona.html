@@ -33,9 +33,11 @@
             z-index: 1;
             color: white;
             text-align: left;
-            padding: 20px;
-            max-width: 90%;
+            font-family: 'Lora', sans-serif;
+            padding-top: 20px;
+            max-width: 50%;
             margin: 0 auto;
+            transition: color 0.3s ease;
         }
         .audio-button {
             position: fixed;
@@ -55,45 +57,23 @@
             color: black;
         }
         .custom-pre {
-            font-size: 1.2rem;
-            font-family: 'Lora', serif;
-            line-height: 1.5;
+            font-size: 27px;
+            line-height: 1;
             margin-bottom: 20px;
             white-space: pre-wrap;
-            word-wrap: break-word;
             color: rgb(255, 255, 255);
             text-align: left;
         }
         a {
             text-decoration: none;
             color: white;
-            font-size: 1.2rem;
+            font-size: 25px;
             border: 1px solid white;
             padding: 5px 10px;
             border-radius: 5px;
         }
         a:hover {
             background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        @media (max-width: 768px) {
-            .custom-pre {
-                font-size: 1rem;
-            }
-            .audio-button {
-                font-size: 12px;
-                padding: 8px 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .content {
-                max-width: 95%;
-            }
-            .audio-button {
-                font-size: 10px;
-                padding: 6px 10px;
-            }
         }
     </style>
 </head>
@@ -137,30 +117,63 @@
             
             Mam nadzieję, że Twoja rodzina jest dla Ciebie oparciem. Życie bywa skomplikowane, ale nikt nie powinien przechodzić przez nie sam. Życzę Ci, aby Twoi bliscy zawsze byli przy Tobie, wspierali Cię w trudnych chwilach i cieszyli się razem z Tobą z Twoich sukcesów. Rodzina może być największą siłą, jeśli tylko dajemy sobie nawzajem miłość i zrozumienie.
             
-            Czasami zastanawiam się, co bym powiedział, gdybym mógł Cię znowu spotkać, choćby przez pięć minut. Może nie zdążyłbym wyrazić wszystkiego, co czuję, ale każde słowo byłoby szczere. Chciałbym zobaczyć Twój uśmiech, usłyszeć Twój głos i po prostu wiedzieć, że u Ciebie wszystko w porządku. Twoja obecność w moim życiu była dla mnie bezcenna, i nie ma dnia, żebym o tym nie pamiętał.
-            
-            Na koniec chcę Ci życzyć wszystkiego, co najlepsze. Niech każdy Twój dzień będzie pełen radości i spokoju. Niech Twoje marzenia stają się rzeczywistością, a każda przeszkoda na drodze zamienia się w kolejny krok do sukcesu. Pamiętaj, że jesteś wyjątkowa, i że gdzieś tam jest ktoś, kto zawsze będzie o Tobie ciepło myślał.
-            
-            Dbaj o siebie, Gwiazdeczko, i pamiętaj, że zasługujesz na wszystko, co najlepsze.
-            
-            Będziesz na zawsze w moim sercu,
-            Łukasz
+            Czasami zastanawiam się, co bym powiedział, gdybym mógł Cię znowu spotkać, choćby przez pięć minut. Może nie zdążyłbym wyrazić wszystkiego, co czuję, ale każde słowo byłoby szczere. Chciałbym powiedzieć Ci, że życzę Ci tylko dobra i sukcesów. Chciałbym, żebyś wiedziała, że zawsze będę Cię wspierał, mimo że nasze drogi mogą się rozchodzić. I że niezależnie od tego, gdzie życie Cię zaprowadzi, moje serce będzie zawsze przy Tobie.
+
+            Z szacunkiem,
+            [Twoje imię]
         </pre>
     </div>
 
     <script>
         const audioButton = document.getElementById('audioButton');
-        const backgroundVideo = document.getElementById('backgroundVideo');
+        const video = document.getElementById('backgroundVideo');
+        const textElement = document.getElementById('textToRead');
 
-        audioButton.addEventListener('click', function() {
-            if (backgroundVideo.muted) {
-                backgroundVideo.muted = false;
-                audioButton.textContent = '🔈 Wycisz dźwięk';
+        let audioEnabled = false;
+        audioButton.addEventListener('click', () => {
+            if (audioEnabled) {
+                video.muted = true;
+                audioButton.textContent = "🔊 Włącz dźwięk";
             } else {
-                backgroundVideo.muted = true;
-                audioButton.textContent = '🔊 Włącz dźwięk';
+                video.muted = false;
+                audioButton.textContent = "🔈 Wyłącz dźwięk";
             }
+            audioEnabled = !audioEnabled;
         });
+
+        function getBrightness(img) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, img.width, img.height);
+            const data = ctx.getImageData(0, 0, img.width, img.height);
+            let r, g, b, avg;
+            let colorSum = 0;
+            const pixelCount = data.width * data.height;
+
+            for (let i = 0; i < pixelCount; i++) {
+                r = data.data[i * 4];
+                g = data.data[i * 4 + 1];
+                b = data.data[i * 4 + 2];
+                avg = (r + g + b) / 3;
+                colorSum += avg;
+            }
+
+            const brightness = colorSum / pixelCount;
+            return brightness;
+        }
+
+        function updateTextColor() {
+            const brightness = getBrightness(video);
+            if (brightness > 128) {
+                textElement.style.color = 'black';
+            } else {
+                textElement.style.color = 'white';
+            }
+        }
+
+        setInterval(updateTextColor, 100);
     </script>
 </body>
 </html>
