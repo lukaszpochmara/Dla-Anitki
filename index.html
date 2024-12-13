@@ -42,10 +42,10 @@
 
     #message {
       position: absolute;
-      bottom: 200px;
+      bottom: 100px;
       left: 50%;
       transform: translateX(-20%);
-      font-size: 60px;
+      font-size: 35px;
       color: #f3091c;
       opacity: 0;
       transition: opacity 1s ease-in-out;
@@ -105,6 +105,7 @@
       color: black;
       opacity: 1;
       transition: opacity 1s ease-in-out;
+      background-color: #0748d3;
     }
 
     @keyframes walk {
@@ -142,7 +143,7 @@
   <img id="cat" src="assets/lion.gif" alt="Walking Cat">
   <div id="message">
     <p><strong>Cześć Anitko!</strong> Dzisiaj Twoje urodziny :)</p>
-    <p>Jeżeli nie słyszysz dzwięku to mam do Ciebie prośbę. Postępuj wg moich instrukcji:</p>
+    <p>Jeżeli nie słyszysz dzwięku to mam do Ciebie prośbę. Postępuj wg. instrukcji:</p>
     <ol>
       <li>Kliknij ikonę kłódki <strong>🔒</strong> (obok adresu URL) w pasku adresu.</li>
       <li>W menu rozwijanym znajdź opcję <strong>"Dźwięk"</strong>.</li>
@@ -167,7 +168,7 @@
   </audio>
 
   <!-- Button to toggle music -->
-  <button id="audio-toggle-button">Mute Music</button>
+  <button id="audio-toggle-button">Unmute Music</button>
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -216,7 +217,7 @@
           setTimeout(function() {
             message.style.visibility = "hidden";
           }, 2000);
-        }, 15000); // Wait 5 seconds before continuing the animation
+        }, 20000); // Wait 5 seconds before continuing the animation
       });
 
       // Toggle Audio Playback
