@@ -106,6 +106,28 @@
       opacity: 1;
       transition: opacity 1s ease-in-out;
       background-color: #0748d3;
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+
+    #retry-button {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #f3091c;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      opacity: 1;
+      transition: background-color 0.3s ease, opacity 1s ease-in-out;
+    }
+
+    #retry-button:hover {
+      background-color: #d3071a;
     }
 
     @keyframes walk {
@@ -152,9 +174,9 @@
     </ol>
   </div>
   <div class="content">
-    
-  <div id="catch-message">Złap kotka!</div> <!-- Added catch message -->
-    
+    <div id="catch-message">Złap kotka!</div>
+    <button id="retry-button">Spróbuj ponownie złapać kotka:)</button> <!-- Retry button -->
+  </div>
   <div id="main-content">
     <h1></h1>
     <p></p>
@@ -179,6 +201,7 @@
       const message = document.getElementById("message");
       const nextButton = document.getElementById("next-button");
       const catchMessage = document.getElementById("catch-message");
+      const retryButton = document.getElementById("retry-button");
       const audioElement = document.getElementById("background-music");
       const audioToggleButton = document.getElementById("audio-toggle-button");
 
@@ -204,12 +227,18 @@
       cat.addEventListener("click", function() {
         // Stop the animation
         cat.style.animationPlayState = 'paused';
-        
+
         message.style.visibility = "visible";
         message.style.opacity = 1;
 
         // Hide "Złap kota!" message when the cat is clicked
         catchMessage.style.opacity = 0;
+
+        // Hide the retry button
+        retryButton.style.opacity = 0;
+        setTimeout(function() {
+          retryButton.style.visibility = "hidden";
+        }, 1000); // Add delay to fully fade out the button
 
         // After 5 seconds, resume the cat animation
         setTimeout(function() {
@@ -219,6 +248,15 @@
             message.style.visibility = "hidden";
           }, 3000);
         }, 25000); // Wait 5 seconds before continuing the animation
+      });
+
+      // Retry button to restart the animation
+      retryButton.addEventListener("click", function () {
+        cat.style.left = "-300px"; // Reset cat's position
+        cat.style.animation = "none"; // Remove animation
+        setTimeout(function () {
+          cat.style.animation = "walk 7s linear forwards"; // Restart animation
+        }, 50); // Add small delay to ensure the reset works
       });
 
       // Toggle Audio Playback
